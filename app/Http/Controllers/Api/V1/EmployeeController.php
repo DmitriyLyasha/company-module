@@ -21,19 +21,15 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create(StoreEmployeeRequest $request)
-    {
-        return new StoreEmployeeRequest(Employee::create($request->all()));
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreEmployeeRequest $request)
     {
-        return new EmployeeResource(Employee::create($request->all()));
+        $data = $request->validated();
+        $employee = Employee::create($data);
+        $employee->updateProjects($data);
+
+        return new EmployeeResource($employee);
     }
 
     /**
@@ -60,7 +56,9 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        $employee->update($request->all());
+        $data = $request->validated();
+        $employee->updateWithProject($data);
+
         return new EmployeeResource($employee);
     }
 

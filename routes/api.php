@@ -22,17 +22,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function() {
-    Route::post('/login', 'AuthController@login');
-    Route::get('/companies', 'CompanyController@index');
-    Route::get('/companies/{id}', 'CompanyController@show');
-    Route::get('/employees', 'EmployeeController@index');
-    Route::get('/employees/{id}', 'EmployeeController@show');
-    Route::get('/projects', 'ProjectController@index');
-    Route::get('/projects/{id}', 'ProjectController@show');
+    Route::get('/companies', 'CompanyController@index')->withoutMiddleware('auth');
+    Route::get('/companies/{id}', 'CompanyController@show')->withoutMiddleware('auth');
+    Route::get('/employees', 'EmployeeController@index')->withoutMiddleware('auth');
+    Route::get('/employees/{id}', 'EmployeeController@show')->withoutMiddleware('auth');
+    Route::get('/projects', 'ProjectController@index')->withoutMiddleware('auth');
+    Route::get('/projects/{id}', 'ProjectController@show')->withoutMiddleware('auth');
 
     Route::middleware(['auth'])->group(function () {
-        Route::apiResource('companies', 'CompanyController');
-        Route::apiResource('employees', 'EmployeeController');
-        Route::apiResource('projects', 'ProjectController');
+        Route::apiResource('companies', 'CompanyController')->except(['index', 'show']);;
+        Route::apiResource('employees', 'EmployeeController')->except(['index', 'show']);;
+        Route::apiResource('projects', 'ProjectController')->except(['index', 'show']);;
     });
 });
