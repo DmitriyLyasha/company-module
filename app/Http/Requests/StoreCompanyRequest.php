@@ -22,8 +22,21 @@ class StoreCompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required|string'],
+            'name' => ['required', 'string'],
             'email' => ['required', 'email'],
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Fill the name!',
+            'email.required' => 'We need your email',
         ];
     }
 }

@@ -7,7 +7,6 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\V1\ProjectCollection;
 use App\Http\Resources\V1\ProjectResource;
-use App\Http\Services\V1\ProjectFilter;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -26,7 +25,7 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        return new StoreProjectRequest(Project::create($request->all()));
+        return new ProjectResource(Project::create($request->all()));
     }
 
     /**
@@ -62,6 +61,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if (!$project->exists) {
+            return response()->json(['message' => 'Project not found'], 404);
+        }
         $project->delete();
         return response()->noContent();
     }

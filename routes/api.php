@@ -29,7 +29,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
     Route::get('/projects', 'ProjectController@index')->withoutMiddleware('auth');
     Route::get('/projects/{id}', 'ProjectController@show')->withoutMiddleware('auth');
 
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth:sanctum'])->group(function () {
         Route::apiResource('companies', 'CompanyController')->except(['index', 'show']);;
         Route::apiResource('employees', 'EmployeeController')->except(['index', 'show']);;
         Route::apiResource('projects', 'ProjectController')->except(['index', 'show']);;
